@@ -13,6 +13,7 @@ public class PagePath {
     public static final String BASKET_PAGE = "/pages/basket.jsp";
     public static final String ORDER_PAGE = "/pages/orders_list.jsp";
     public static final String ADD_MEDICINE_PAGE = "/pages/medicine_add.jsp";
+    public static final String PHARMACY_LIST = "/pages/pharmacy_list.jsp";
 
     private PagePath() {
     }

@@ -1,7 +1,8 @@
-package com.example.finalwebprojectepam.controller.command;
+package com.example.finalwebprojectepam.controller.command.medicine;
 
 import com.example.finalwebprojectepam.controller.Page;
 import com.example.finalwebprojectepam.controller.Router;
+import com.example.finalwebprojectepam.controller.command.Command;
 import com.example.finalwebprojectepam.exception.CommandException;
 import com.example.finalwebprojectepam.exception.ServiceException;
 import com.example.finalwebprojectepam.model.entity.Medicine;

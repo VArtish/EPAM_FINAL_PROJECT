@@ -1,6 +1,7 @@
-package com.example.finalwebprojectepam.controller.command;
+package com.example.finalwebprojectepam.controller.command.user;
 
 import com.example.finalwebprojectepam.controller.Router;
+import com.example.finalwebprojectepam.controller.command.Command;
 import com.example.finalwebprojectepam.exception.CommandException;
 import com.example.finalwebprojectepam.exception.ServiceException;
 import com.example.finalwebprojectepam.model.entity.User;
@@ -18,7 +19,7 @@ import static com.example.finalwebprojectepam.controller.PagePath.*;
 import static com.example.finalwebprojectepam.controller.ParameterName.*;
 import static com.example.finalwebprojectepam.controller.PropertyKey.*;
 
-public class LoginCommand implements Command{
+public class LoginCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

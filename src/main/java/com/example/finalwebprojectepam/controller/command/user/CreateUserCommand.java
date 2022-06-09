@@ -1,6 +1,7 @@
-package com.example.finalwebprojectepam.controller.command;
+package com.example.finalwebprojectepam.controller.command.user;
 
 import com.example.finalwebprojectepam.controller.Router;
+import com.example.finalwebprojectepam.controller.command.Command;
 import com.example.finalwebprojectepam.exception.CommandException;
 import com.example.finalwebprojectepam.exception.ServiceException;
 import com.example.finalwebprojectepam.model.entity.type.UserRole;

@@ -1,6 +1,18 @@
 package com.example.finalwebprojectepam.controller.command;
 
+import com.example.finalwebprojectepam.controller.command.basket.AddMedicineToBasket;
+import com.example.finalwebprojectepam.controller.command.basket.ChangeSizeMedicineInBasketCommand;
+import com.example.finalwebprojectepam.controller.command.basket.DeleteMedicineFromBasketCommand;
+import com.example.finalwebprojectepam.controller.command.basket.ShowBasketCommand;
+import com.example.finalwebprojectepam.controller.command.medicine.AddNewMedicineCommand;
+import com.example.finalwebprojectepam.controller.command.medicine.ShowAddMedicinePageCommand;
+import com.example.finalwebprojectepam.controller.command.medicine.ShowMedicineListCommand;
+import com.example.finalwebprojectepam.controller.command.medicine.ShowMoreInfoMedicineCommand;
+import com.example.finalwebprojectepam.controller.command.order.CreateOrderCommand;
+import com.example.finalwebprojectepam.controller.command.order.ShowOrderListCommand;
+import com.example.finalwebprojectepam.controller.command.pharmacy.ShowPharmacyListCommand;
 import com.example.finalwebprojectepam.controller.command.redirect.GoToMainPageCommand;
+import com.example.finalwebprojectepam.controller.command.user.*;
 
 public enum CommandType {
     LOGIN(new LoginCommand()),
@@ -23,6 +35,7 @@ public enum CommandType {
     SHOW_ORDER_LIST(new ShowOrderListCommand()),
     ADD_NEW_MEDICINE(new AddNewMedicineCommand()),
     SHOW_ADD_MEDICINE_PAGE(new ShowAddMedicinePageCommand()),
+    SHOW_PHARMACY_LIST(new ShowPharmacyListCommand()),
     DEFAULT_COMMAND(new DefaultCommand());
 
 

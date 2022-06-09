@@ -9,7 +9,6 @@ import com.example.finalwebprojectepam.model.entity.type.UserRole;
 import com.example.finalwebprojectepam.model.entity.type.UserState;
 import com.example.finalwebprojectepam.service.UserService;
 import com.example.finalwebprojectepam.util.PasswordEncryption;
-import com.example.finalwebprojectepam.util.impl.UserDataResearcherImpl;
 
 import java.sql.Date;
 import java.util.Map;
