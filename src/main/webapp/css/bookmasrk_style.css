@@ -1,0 +1,59 @@
+/*
+* Кнопка "В избранное"
+* Browsers: last 5 version
+*/
+
+.js-bookmark {
+    text-decoration: none;
+}
+.bookmark-edge {
+    float: left;
+}
+.bookmark-edge .edge-top {
+    border-top: 20px solid #b00;
+}
+.bookmark-edge .edge-bottom {
+    border-bottom: 20px solid #b00;
+}
+.bookmark-edge .edge-top,
+.bookmark-edge .edge-bottom {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+}
+.bookmark-body {
+    display: block;
+    font-size: 30px;
+    line-height: 40px;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 40px;
+    height: 40px;
+    -webkit-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    color: #fff;
+    background-color: #b00;
+    position: relative;
+    padding-left: 8px;
+}
+.bookmark .bookmark-body::after {
+    display: inline-block;
+    color: #b00;
+}
+.favourite:hover .bookmark .bookmark-body::after {
+    position: absolute;
+    margin-left: 20px;
+    content: 'В избранное';
+    color: #fff;
+    font-size: 18px;
+    line-height: 40px;
+    text-transform: uppercase;
+}
+.favourite:hover .bookmark .bookmark-body {
+    min-width: 185px;
+    -webkit-transition: all 0.1s ease;
+    -o-transition: all 0.1s ease;
+    transition: all 0.1s ease;
+}

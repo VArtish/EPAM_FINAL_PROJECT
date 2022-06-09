@@ -1,0 +1,19 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<c:choose>
+    <c:when test="${sessionScope.locale == 'en'}">
+        <button type="button" class="btn btn-dark dropdown-toggle" id="navbarScrollingDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">English
+        </button>
+    </c:when>
+    <c:when test="${sessionScope.locale == 'ru'}">
+        <button type="button" class="btn btn-dark dropdown-toggle" id="navbarScrollingDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">Русский
+        </button>
+    </c:when>
+</c:choose>
+
+<ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+    <li><a class="dropdown-item" href="${abs}/controller?command=change_locale&new_locale=en">English</a></li>
+    <li><a class="dropdown-item" href="${abs}/controller?command=change_locale&new_locale=ru">Русский</a></li>
+</ul>

@@ -1,0 +1,10 @@
+.col-md-3.ps-5.recept {
+    padding-left: 37px !important;
+}
+.option-first{
+    display: none;
+}
+button.btn.btn-primary.btn-lg {
+    background-color: #212529;
+    border-color: #212529;
+}

@@ -1,0 +1,10 @@
+.incorrect_data_msg{
+    color: darkred;
+}
+.invalid-feedback {
+    display: inline;
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
