@@ -27,22 +27,23 @@ public class LoginCommand implements Command {
         Map<String, String> userData = requestMapper.mapRequest(request);
         UserService userService = UserServiceImpl.getInstance();
         HttpSession session = request.getSession();
-        Router router = new Router(SIGN_IN_PAGE);
+        Router router = new Router(MAIN_PAGE);
         try{
             Optional<User> optionalUser = userService.logIn(userData);
             if(optionalUser.isPresent()) {
                 User currentUser = optionalUser.get();
+                if(currentUser.getUserState() == UserState.BANNED) {
+                    router.setPagePath(BLOCKED_PAGE);
+                    return router;
+                }
                 session.setAttribute(USER_ROLE, currentUser.getUserRole());
                 session.setAttribute(USER_LOGIN, currentUser.getLogin());
                 session.setAttribute(USER_ID, currentUser.getId());
                 router.setRouterType(Router.RouterType.REDIRECT);
-                if(currentUser.getUserState() == UserState.DISABLED) {
-                    router.setPagePath(BLOCKED_PAGE);
-                }
                 session.setAttribute(USER_STATE, currentUser.getUserState());
-                router.setPagePath(MAIN_PAGE);
             } else {
                 addIncorrectMessageToRequest(request, userData);
+                router.setPagePath(SIGN_IN_PAGE);
                 request.setAttribute(USER_LOGIN, userData.get(USER_LOGIN));
             }
         } catch(ServiceException e) {

@@ -25,6 +25,7 @@ public class DefaultMedicineDao extends BaseDao<Medicine, Long> implements Medic
             "medicine_price, medicine_quantity, medicine_id, medicine_ingredients, medicine_producing_country, medicine_image_link, medicine_name, pharmacy_name, pharmacy_address, medicine_pharmacy_id FROM medicines " +
             "INNER JOIN pharmacies ON pharmacy_id = medicine_pharmacy_id ";
     private static final String SQL_FIND_COUNT_ALL_MEDICINE = "SELECT COUNT(*) FROM medicines ";
+    private static final String SQL_FIND_COUNT_MEDICINE_BY_PHARMACY_ID = SQL_FIND_COUNT_ALL_MEDICINE + "WHERE MEDICINE_PHARMACY_ID = ?";
     private static final String SQL_SELECT_MEDICINE_BY_ID = "SELECT medicine_amount_in_package, medicine_amount_in_plate, medicine_need_prescription, " +
             "medicine_price, medicine_quantity, medicine_ingredients, medicine_producing_country, medicine_name, medicine_id, medicine_pharmacy_id, medicine_image_link, pharmacy_name, pharmacy_address FROM medicines INNER JOIN pharmacies ON pharmacy_id = medicine_pharmacy_id WHERE medicine_id = ?";
     private static final String ORDER_BY = "ORDER BY ";
@@ -36,6 +37,7 @@ public class DefaultMedicineDao extends BaseDao<Medicine, Long> implements Medic
             "medicine_price, medicine_quantity, medicine_ingredients, medicine_producing_country, medicine_name, pharmacy_name, pharmacy_address, medicine_pharmacy_id FROM medicines" +
             "WHERE medicine_need_prescription = ? " +
             "INNER JOIN pharmacies ON pharmacy_id = medicine_pharmacy_id";
+    private static final String WHERE_PHARMACY_ID = "WHERE pharmacy_id = ";
     private static final String SQL_UPDATE_MEDICINE_QUANTITY = "UPDATE medicines SET medicine_quantity = (?) WHERE medicine_id = ?";
 
     @Override
@@ -116,10 +118,10 @@ public class DefaultMedicineDao extends BaseDao<Medicine, Long> implements Medic
     }
 
     @Override
-    public List<Medicine> findPageMedicineByOrderWithLimitAndOffset(int pageToDisplay, int pageSize, String columnName) throws DaoException {
+    public List<Medicine> findPageMedicineByOrderWithLimitAndOffset(int pageToDisplay, int pageSize, String columnName, String choosePharmacy) throws DaoException {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(buildPageableQuery(pageToDisplay, pageSize, columnName));) {
+             ResultSet resultSet = statement.executeQuery(buildPageableQuery(pageToDisplay, pageSize, columnName, choosePharmacy));) {
             List<Medicine> medicines = new ArrayList<>();
             MedicineRowMapper medicineRowMapper = MedicineRowMapper.getInstance();
 
@@ -140,7 +142,7 @@ public class DefaultMedicineDao extends BaseDao<Medicine, Long> implements Medic
         transaction.begin();
         Connection connection = null;
         PreparedStatement statement = null;
-        try{
+        try {
             connection = transaction.getConnection();
             statement = connection.prepareStatement(SQL_UPDATE_MEDICINE_QUANTITY);
             statement.setInt(1, updateQuantity);
@@ -149,16 +151,16 @@ public class DefaultMedicineDao extends BaseDao<Medicine, Long> implements Medic
             transaction.commit();
 
             return update == ONE_UPDATED;
-        } catch(SQLException sqlException) {
+        } catch (SQLException sqlException) {
             transaction.rollback();
             try {
-                if(connection != null) {
+                if (connection != null) {
                     connection.close();
                 }
-                if(statement != null) {
+                if (statement != null) {
                     statement.close();
                 }
-            } catch(SQLException sqlException1) {
+            } catch (SQLException sqlException1) {
                 throw new DaoException(sqlException1);
             }
 
@@ -193,8 +195,33 @@ public class DefaultMedicineDao extends BaseDao<Medicine, Long> implements Medic
         return 0;
     }
 
-    private String buildPageableQuery(int pageToDisplay, int pageSize, String columnName) {
-        StringBuilder stringBuilder = new StringBuilder(SQL_SELECT_ALL_MEDICINE + ORDER_BY);
+    @Override
+    public int findMedicineSizeByPharmacyId(long pharmacyId) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_FIND_COUNT_MEDICINE_BY_PHARMACY_ID);) {
+            statement.setLong(1, pharmacyId);
+            ResultSet resultSet = statement.executeQuery();
+            int count = 0;
+            while (resultSet.next()) {
+                count += resultSet.getInt(1);
+            }
+
+            return count;
+        } catch (SQLException sqlException) {
+            throw new DaoException(sqlException);
+        }
+    }
+
+    private String buildPageableQuery(int pageToDisplay, int pageSize, String columnName, String choosePharmacy) {
+        StringBuilder stringBuilder = null;
+        if (choosePharmacy == null || choosePharmacy.isEmpty()) {
+            stringBuilder = new StringBuilder(SQL_SELECT_ALL_MEDICINE + ORDER_BY);
+        } else {
+            stringBuilder = new StringBuilder(SQL_SELECT_ALL_MEDICINE + WHERE_PHARMACY_ID);
+            stringBuilder.append(choosePharmacy);
+            stringBuilder.append(" ");
+            stringBuilder.append(ORDER_BY);
+        }
         stringBuilder.append(columnName);
         int offset = (pageSize * pageToDisplay) - pageSize;
         stringBuilder.append(" LIMIT ");

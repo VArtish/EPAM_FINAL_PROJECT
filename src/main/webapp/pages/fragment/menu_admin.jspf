@@ -5,7 +5,7 @@
     <a class="nav-link active" aria-current="page" href="${abs}/controller?command=go_to_main_page">${header_home}</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="#">${header_users}</a>
+    <a class="nav-link" href="${abs}/controller?command=show_user_list">${header_users}</a>
 </li>
 <li class="nav-item">
     <a class="nav-link" href="#">${header_medicines}</a>

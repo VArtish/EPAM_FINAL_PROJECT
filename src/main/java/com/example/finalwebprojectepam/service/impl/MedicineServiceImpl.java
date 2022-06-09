@@ -205,11 +205,11 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    public List<Medicine> getMedicineList(int pageToDisplay, int pageSize, String columnName) throws ServiceException {
+    public List<Medicine> getMedicineList(int pageToDisplay, int pageSize, String columnName, String choosePharmacy) throws ServiceException {
         MedicineDao medicineDao = new DefaultMedicineDao();
         MediaService mediaService = MediaServiceImpl.getInstance();
         try {
-            List<Medicine> medicines = medicineDao.findPageMedicineByOrderWithLimitAndOffset(pageToDisplay, pageSize, columnName);
+            List<Medicine> medicines = medicineDao.findPageMedicineByOrderWithLimitAndOffset(pageToDisplay, pageSize, columnName, choosePharmacy);
             for(Medicine medicine: medicines) {
                 String imageKey = medicine.getImageLink();
                 medicine.setImageLink(mediaService.getPreviewPhoto(imageKey));
@@ -296,5 +296,17 @@ public class MedicineServiceImpl implements MedicineService {
         }
 
         return check ? Optional.of(message.toString()) : Optional.empty();
+    }
+
+    @Override
+    public int getMedicineListCountByPharmacyId(String strPharmacyId) throws ServiceException {
+        DefaultMedicineDao medicineDao = new DefaultMedicineDao();
+        try {
+            long pharmacyId = Long.parseLong(strPharmacyId);
+            int countMedicineList = medicineDao.findMedicineSizeByPharmacyId(pharmacyId);
+            return countMedicineList;
+        } catch (DaoException daoException) {
+            throw new ServiceException(daoException);
+        }
     }
 }

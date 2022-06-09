@@ -12,7 +12,7 @@ public interface MedicineService {
 
     int getMedicineListCount() throws ServiceException;
 
-    List<Medicine> getMedicineList(int pageToDisplay, int pageSize, String columnName) throws ServiceException;
+    List<Medicine> getMedicineList(int pageToDisplay, int pageSize, String columnName, String choosePharmacy) throws ServiceException;
 
     boolean updateMedicineQuantity(Map<Medicine, Integer> medicines) throws ServiceException;
 
@@ -23,4 +23,6 @@ public interface MedicineService {
     void findMedicineInBasketById(long medicineId, Map<Medicine, Integer> medicines) throws ServiceException;
 
     Optional<String> checkActualMedicineQuantityInPharmacy(Map<Medicine, Integer> basket) throws ServiceException;
+
+    int getMedicineListCountByPharmacyId(String pharmacyId) throws ServiceException;
 }

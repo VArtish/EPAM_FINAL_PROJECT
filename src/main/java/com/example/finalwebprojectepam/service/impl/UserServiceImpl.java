@@ -11,6 +11,7 @@ import com.example.finalwebprojectepam.service.UserService;
 import com.example.finalwebprojectepam.util.PasswordEncryption;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -120,12 +121,12 @@ public class UserServiceImpl implements UserService {
                 validate = false;
                 userUpdateData.put(USER_EMAIL_EXIST, EMAIL_EXIST_MESSAGE);
             }
-            if(userDao.findByLogin(login).isPresent() && !currentUser.get().getLogin().equals(login)) {
+            if (userDao.findByLogin(login).isPresent() && !currentUser.get().getLogin().equals(login)) {
                 validate = false;
                 userUpdateData.put(USER_LOGIN_EXIST, LOGIN_EXIST_MESSAGE);
             }
 
-            if(!validate) {
+            if (!validate) {
                 return Optional.empty();
             }
 
@@ -140,16 +141,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean changeUserPassword(Map<String, String> userData) throws ServiceException {
         UserDataResearcherImpl userDataResearcher = UserDataResearcherImpl.getInstance();
-        if(!userDataResearcher.researchChangePasswordData(userData)) {
+        if (!userDataResearcher.researchChangePasswordData(userData)) {
             return false;
         }
 
         long userId = Long.parseLong(userData.get(USER_ID));
         DefaultUserDao userDao = new DefaultUserDao();
-        try{
+        try {
             String oldPassword = userData.get(OLD_PASSWORD);
             Optional<String> optionalOldPassword = userDao.findPasswordById(userId);
-            if(optionalOldPassword.get().equals(oldPassword)) {
+            if (optionalOldPassword.get().equals(oldPassword)) {
                 userData.put(INCORRECT_OLD_PASSWORD, INCORRECT_OLD_PASSWORD_MESSAGE);
                 return false;
             }
@@ -157,7 +158,48 @@ public class UserServiceImpl implements UserService {
             String encryptionNewPassword = PasswordEncryption.encryption(newPassword);
 
             return userDao.updatePasswordById(encryptionNewPassword, userId);
-        } catch(DaoException daoException) {
+        } catch (DaoException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    @Override
+    public List<User> getUserList() throws ServiceException {
+        DefaultUserDao userDao = new DefaultUserDao();
+        try {
+            List<User> users = userDao.findAll();
+            return users;
+        } catch (DaoException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    @Override
+    public boolean updateUserRole(String login, UserRole userRole) throws ServiceException {
+        DefaultUserDao userDao = new DefaultUserDao();
+        try {
+            return userDao.updateUserRole(login, userRole);
+        } catch (DaoException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    @Override
+    public boolean updateUserState(String login, UserState userState) throws ServiceException {
+        DefaultUserDao userDao = new DefaultUserDao();
+        try {
+            return userDao.updateUserState(login, userState);
+        } catch (DaoException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    @Override
+    public boolean deleteUser(String login) throws ServiceException {
+        DefaultUserDao userDao = new DefaultUserDao();
+        try {
+            return userDao.deleteUser(login);
+        } catch (DaoException daoException) {
             throw new ServiceException(daoException);
         }
     }

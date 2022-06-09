@@ -11,11 +11,13 @@ public interface MedicineDao {
 
     int findMedicineSize() throws DaoException;
 
-    List<Medicine> findPageMedicineByOrderWithLimitAndOffset(int pageToDisplay, int pageSize, String columnName) throws DaoException;
+    List<Medicine> findPageMedicineByOrderWithLimitAndOffset(int pageToDisplay, int pageSize, String columnName, String choosePharmacy) throws DaoException;
 
     boolean updateMedicineQuantityById(long medicineId, int updateQuantity) throws DaoException;
 
     Optional<Integer> findMedicineQuantityById(long medicineId) throws DaoException;
 
     int findSizeMedicineLike(String like) throws DaoException;
+
+    int findMedicineSizeByPharmacyId(long pharmacyId) throws DaoException;
 }

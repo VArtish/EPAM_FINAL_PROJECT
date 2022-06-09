@@ -42,13 +42,13 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li><a class="dropdown-item"
-                               href="${abs}/controller?command=show_medicine_list&page=${page.currentPage}&sorted=medicine_id">Sort
+                               href="${abs}/controller?command=show_medicine_list&page=${page.currentPage}&sorted=medicine_id&choose_pharmacy=${choose_pharmacy}">Sort
                             by ID</a></li>
                         <li><a class="dropdown-item"
-                               href="${abs}/controller?command=show_medicine_list&page=${page.currentPage}&sorted=medicine_price">Sort
+                               href="${abs}/controller?command=show_medicine_list&page=${page.currentPage}&sorted=medicine_price&choose_pharmacy=${choose_pharmacy}">Sort
                             by Price</a></li>
                         <li><a class="dropdown-item"
-                               href="${abs}/controller?command=show_medicine_list&page=${page.currentPage}&sorted=medicine_name">Sort
+                               href="${abs}/controller?command=show_medicine_list&page=${page.currentPage}&sorted=medicine_name&choose_pharmacy=${choose_pharmacy}">Sort
                             by Name</a></li>
                     </ul>
                 </div>
@@ -78,11 +78,11 @@
                                 <p class="card-text">Price: ${medicine.price}</p>
                                 <c:choose>
                                     <c:when test="${sessionScope.user_role ne 'GUEST'}">
-                                        <a href="${abs}/controller?command=add_medicine_to_basket&medicine_id=${medicine.medicineId}&page=${page.currentPage}&sorted=${requestScope.sorted}"
+                                        <a href="${abs}/controller?command=add_medicine_to_basket&medicine_id=${medicine.medicineId}&page=${page.currentPage}&sorted=${requestScope.sorted}&choose_pharmacy=${choose_pharmacy}"
                                            class="btn btn-primary">Add to basket</a>
                                     </c:when>
                                 </c:choose>
-                                <a href="${abs}/controller?command=show_more_info_medicine&medicine_id=${medicine.medicineId}&page=${page.currentPage}&sorted=${requestScope.sorted}"
+                                <a href="${abs}/controller?command=show_more_info_medicine&medicine_id=${medicine.medicineId}&page=${page.currentPage}&sorted=${requestScope.sorted}&choose_pharmacy=${choose_pharmacy}"
                                    class="btn btn-primary">Show more</a>
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                 <ul class="pagination mt-2">
                     <li class="page-item ${page.firstPage ? 'disabled' : ''}">
                         <a class="page-link"
-                           href="${abs}/controller?command=show_medicine_list&page=${page.currentPage - 1}"
+                           href="${abs}/controller?command=show_medicine_list&page=${page.currentPage - 1}&sorted=${requestScope.sorted}&choose_pharmacy=${requestScope.choose_pharmacy}"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -103,13 +103,13 @@
                     <c:forEach var="i" begin="1" end="${page.pageCount()}">
                         <li class="page-item ${page.currentPage == i ? 'active': ''}">
                             <a class="page-link"
-                               href="${abs}/controller?command=show_medicine_list&page=${i}">${i}</a>
+                               href="${abs}/controller?command=show_medicine_list&page=${i}&sorted=${requestScope.sorted}&choose_pharmacy=${choose_pharmacy}">${i}</a>
                         </li>
                     </c:forEach>
 
                     <li class="page-item ${page.lastPage ? 'disabled' : ''}">
                         <a class="page-link"
-                           href="${abs}/controller?command=show_medicine_list&page=${page.currentPage + 1}"
+                           href="${abs}/controller?command=show_medicine_list&page=${page.currentPage + 1}&sorted=${requestScope.sorted}&choose_pharmacy=${choose_pharmacy}"
                            aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>

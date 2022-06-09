@@ -23,14 +23,16 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>
-                                    <span class="user-subhead">Member</span>
-                                </td>
-                                <td>
-                                    <a href="#">marlon@brando.com</a>
-                                </td>
-                            </tr>
+                            <c:forEach items="${pharmacies}" var="pharmacy">
+                                <tr>
+                                    <td>
+                                        <a href="${abs}/controller?command=show_medicine_list&choose_pharmacy=${pharmacy.pharmacyId}"><span class="user-subhead">${pharmacy.name}</span></a>
+                                    </td>
+                                    <td>
+                                            ${pharmacy.address}
+                                    </td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>

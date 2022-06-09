@@ -17,32 +17,50 @@ import java.util.Optional;
 
 import static com.example.finalwebprojectepam.controller.AttributeName.*;
 import static com.example.finalwebprojectepam.controller.PagePath.MEDICINE_LIST;
+import static com.example.finalwebprojectepam.controller.ParameterName.CHOOSE_PHARMACY;
 import static com.example.finalwebprojectepam.controller.ParameterName.PAGE;
-import static com.example.finalwebprojectepam.controller.ParameterName.SEARCH_LINE;
 
 public class ShowMedicineListCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         MedicineService medicineService = MedicineServiceImpl.getInstance();
         try {
-            int countMedicines = medicineService.getMedicineListCount();
             int pageToDisplay = getPage(request);
             String nameColumn = request.getParameter(SORTED);
+            String choosePharmacy = request.getParameter(CHOOSE_PHARMACY);
 
             if(nameColumn == null) {
                 nameColumn = MEDICINE_ID;
             }
+
+            int countMedicines = findMedicineCount(choosePharmacy);
             List<Medicine> medicines = new ArrayList<>(countMedicines);
             if(countMedicines > 0) {
-                medicines = medicineService.getMedicineList(pageToDisplay, Page.PAGE_SIZE, nameColumn);
+                medicines = medicineService.getMedicineList(pageToDisplay, Page.PAGE_SIZE, nameColumn, choosePharmacy);
             }
 
             request.setAttribute(PAGE, new Page(countMedicines, pageToDisplay, Page.PAGE_SIZE));
             request.setAttribute(MEDICINES, medicines);
             request.setAttribute(SORTED, nameColumn);
             request.getSession().setAttribute(LAST_PAGE, MEDICINE_LIST);
+            request.setAttribute(CHOOSE_PHARMACY, choosePharmacy);
             return new Router(MEDICINE_LIST);
         } catch (ServiceException serviceException) {
+            throw new CommandException(serviceException);
+        }
+    }
+
+    private int findMedicineCount(String choosePharmacy) throws CommandException{
+        MedicineService medicineService = MedicineServiceImpl.getInstance();
+        int medicineCount;
+        try {
+            if (choosePharmacy == null || choosePharmacy.isEmpty()) {
+                medicineCount = medicineService.getMedicineListCount();
+            } else {
+                medicineCount = medicineService.getMedicineListCountByPharmacyId(choosePharmacy);
+            }
+            return medicineCount;
+        } catch(ServiceException serviceException) {
             throw new CommandException(serviceException);
         }
     }

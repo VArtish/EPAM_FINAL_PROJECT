@@ -14,6 +14,7 @@ public class PagePath {
     public static final String ORDER_PAGE = "/pages/orders_list.jsp";
     public static final String ADD_MEDICINE_PAGE = "/pages/medicine_add.jsp";
     public static final String PHARMACY_LIST = "/pages/pharmacy_list.jsp";
+    public static final String USER_LIST = "/pages/user_list_adm.jsp";
 
     private PagePath() {
     }

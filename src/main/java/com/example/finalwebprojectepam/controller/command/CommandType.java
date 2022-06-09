@@ -36,6 +36,10 @@ public enum CommandType {
     ADD_NEW_MEDICINE(new AddNewMedicineCommand()),
     SHOW_ADD_MEDICINE_PAGE(new ShowAddMedicinePageCommand()),
     SHOW_PHARMACY_LIST(new ShowPharmacyListCommand()),
+    SHOW_USER_LIST(new ShowUserListCommand()),
+    CHANGE_USER_ROLE(new ChangeUserRoleCommand()),
+    CHANGE_USER_STATE(new ChangeUserStateCommand()),
+    DELETE_USER(new DeleteUserCommand()),
     DEFAULT_COMMAND(new DefaultCommand());
 
 

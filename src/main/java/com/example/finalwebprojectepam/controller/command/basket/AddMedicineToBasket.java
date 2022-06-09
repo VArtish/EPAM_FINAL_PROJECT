@@ -16,8 +16,7 @@ import java.util.*;
 
 import static com.example.finalwebprojectepam.controller.AttributeName.*;
 import static com.example.finalwebprojectepam.controller.PagePath.MEDICINE_LIST;
-import static com.example.finalwebprojectepam.controller.ParameterName.BASKET;
-import static com.example.finalwebprojectepam.controller.ParameterName.PAGE;
+import static com.example.finalwebprojectepam.controller.ParameterName.*;
 
 public class AddMedicineToBasket implements Command {
     private static final Integer FIRST_ADD = 1;
@@ -61,16 +60,33 @@ public class AddMedicineToBasket implements Command {
         try {
             int pageToDisplay = getPage(request);
             String nameColumn = request.getParameter(SORTED);
-            int countMedicines = medicineService.getMedicineListCount();
+            String choosePharmacy = request.getParameter(CHOOSE_PHARMACY);
+            int countMedicines = findMedicineCount(choosePharmacy);
             List<Medicine> medicines = new ArrayList<>();
             if (countMedicines > 0) {
-                medicines = medicineService.getMedicineList(pageToDisplay, Page.PAGE_SIZE, nameColumn);
+                medicines = medicineService.getMedicineList(pageToDisplay, Page.PAGE_SIZE, nameColumn, choosePharmacy);
             }
 
             request.setAttribute(PAGE, new Page(countMedicines, pageToDisplay, Page.PAGE_SIZE));
             request.setAttribute(MEDICINES, medicines);
             request.setAttribute(SORTED, nameColumn);
+            request.setAttribute(CHOOSE_PHARMACY, choosePharmacy);
         } catch (ServiceException serviceException) {
+            throw new CommandException(serviceException);
+        }
+    }
+
+    private int findMedicineCount(String choosePharmacy) throws CommandException{
+        MedicineService medicineService = MedicineServiceImpl.getInstance();
+        int medicineCount;
+        try {
+            if (choosePharmacy == null || choosePharmacy.isEmpty()) {
+                medicineCount = medicineService.getMedicineListCount();
+            } else {
+                medicineCount = medicineService.getMedicineListCountByPharmacyId(choosePharmacy);
+            }
+            return medicineCount;
+        } catch(ServiceException serviceException) {
             throw new CommandException(serviceException);
         }
     }

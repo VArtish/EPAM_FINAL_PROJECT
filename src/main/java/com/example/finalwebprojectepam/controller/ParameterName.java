@@ -18,6 +18,12 @@ public class ParameterName {
     public static final String USER_ROLE = "user_role";
     public static final String USER_ID = "user_id";
     public static final String USER_STATE = "user_state";
+    public static final String USERS = "users";
+    public static final String NEW_LOGIN = "new_login";
+    public static final String USERNAME = "username";
+    public static final String NEW_ROLE = "new_role";
+    public static final String NEW_STATE = "new_state";
+    public static final String CHOOSE_PHARMACY = "choose_pharmacy";
     public static final String INCORRECT_NAME = "incorrect_name";
     public static final String INCORRECT_SURNAME = "incorrect_surname";
     public static final String INCORRECT_LOGIN = "incorrect_login";
